@@ -10,6 +10,7 @@ Frontend web construido en React + TypeScript que consume la ML Items API y perm
 ⸻
 
 🚀 Stack tecnológico
+- node v20
 - React 18
 - TypeScript
 - Vite
