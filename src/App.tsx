@@ -1,9 +1,7 @@
-// src/App.tsx
-
-import ItemDetail from "./pages/ItemDetail";
+import { Home } from './pages/Home'
 
 function App() {
-  return <ItemDetail />;
+  return <Home />
 }
 
-export default App;
+export default App

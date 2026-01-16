@@ -1,73 +1,132 @@
-# React + TypeScript + Vite
+🛒 ML Items – Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend web construido en React + TypeScript que consume la ML Items API y permite:
+- Visualizar productos
+- Buscar items
+- Predecir la condición del producto usando un modelo de ML
+- Navegar los resultados de forma paginada
+- Interactuar con la predicción desde la UI
 
-Currently, two official plugins are available:
+⸻
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+🚀 Stack tecnológico
+- React 18
+- TypeScript
+- Vite
+- Fetch API
+- CSS plano (responsive-first)
 
-## React Compiler
+⸻
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+🧠 Funcionalidades implementadas
 
-## Expanding the ESLint configuration
+📋 Listado de productos
+- Consumo del endpoint GET /items
+- Renderizado de productos en formato tipo MercadoLibre
+- Información mostrada:
+- Título
+- Precio
+- Condición real (new / used)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+⸻
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+🔍 Búsqueda de productos
+- Input de búsqueda por texto
+- Consumo del endpoint:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+  GET /items/search?q=...
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Actualización dinámica del listado
+
+⸻
+
+🤖 Predicción de condición (Machine Learning)
+- Cada producto permite ejecutar una predicción individual
+- Consumo del endpoint:
+
+  POST /items/predict-condition
+
+  - Se envían los features relevantes del item:
+- Título
+- Precio
+- Stock
+- Categoría
+- Flags de envío y pago
+- Se muestra:
+- Condición predicha (NEW / USED)
+- Nivel de confianza (%)
+
+La predicción se ejecuta on-demand, no automáticamente, para evitar sobrecargar el backend.
+
+⸻
+
+📦 Paginación progresiva
+- El backend implementa paginación (limit / offset)
+- El frontend consume los items en bloques de 10
+- Se implementó botón “Cargar más”, simulando UX real de marketplace
+- Mejora performance y experiencia de usuario
+
+⸻
+
+🎨 UI / UX
+- Diseño simple y limpio, inspirado en MercadoLibre
+- Layout responsive
+- Componentización clara:
+- ItemCard
+- ItemList
+- PredictCondition
+- Separación clara entre:
+- API layer
+- Tipos
+- Componentes
+- Páginas
+
+⸻
+
+🗂️ Estructura del proyecto
+
+```
+src/
+├── api/
+│   └── items.ts        # Llamadas al backend
+├── components/
+│   ├── ItemCard.tsx
+│   ├── ItemList.tsx
+│   └── PredictCondition.tsx
+├── pages/
+│   └── Home.tsx
+├── types/
+│   └── item.ts
+├── App.tsx
+├── main.tsx
+├── index.css
+└── App.css
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+⚙️ Cómo correr el proyecto
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+1️⃣ Instalar dependencias
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+npm install
+```
+
+2️⃣ Levantar el frontend
+
+```
+npm run dev
+```
+
+Por defecto queda disponible en:
+
+```
+http://localhost:5173
+```
+
+⚠️ El backend debe estar corriendo en http://localhost:8000
+
+🧪 Consideraciones técnicas
+- Se manejan estados de carga y error
+- El frontend no asume predicciones correctas (ML ≠ verdad)
+- Se prioriza claridad del flujo sobre librerías externas
+- Se evita sobre-ingeniería innecesaria
